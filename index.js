@@ -3,7 +3,22 @@ const fs =require('fs')
 const app = require('express')();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
+let request = require('request');
+let cheerio = require('cheerio')
 
+const $url='http://apis.data.go.kr/6410000/busarrivalservice/getBusArrivalList';
+const $KEY=''
+const $station='233001450'
+const $api_url=$url+'?serviceKey='+$KEY+'&stationId='+$station;
+console.log($api_url)
+request($api_url,function(err,res,body){
+    $ = cheerio.load(body);
+    $('busArrivalList').each(function(idx){
+        let no1=$(this).find('plateNo1').text();
+        let no2=$(this).find('plateNo2').text();
+        console.log(`도착 예정 버스: ${no1}, 다음 도착 버스: ${no2 ? no2 : '---'}`);
+    })
+})
 let rooms = [];
 app.use('/css',express.static('./client/css'))
 app.use('/js',express.static('./client/js'))
