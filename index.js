@@ -3,11 +3,12 @@ const fs =require('fs')
 const app = require('express')();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
+const config= require('./config/key')
 let request = require('request');
 let cheerio = require('cheerio')
 
-const $url='http://apis.data.go.kr/6410000/busarrivalservice/getBusArrivalList';
-const $KEY=''
+const $url=config.URL;
+const $KEY=config.KEY;
 const $station='233001450'
 const $api_url=$url+'?serviceKey='+$KEY+'&stationId='+$station;
 console.log($api_url)
